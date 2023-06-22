@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+  broker:
+    image: redis
+  database:
+    image: postgres:12
+    volumes:
+      - database_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${DB_NAME:-production}
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+  backend:
+    env_file:
+      - .env
+    build:
+      context: ./backend
+    command: sh /backend-point.sh
+    volumes:
+      - ./backend/:/app
+      - static_files:/app/static
+      - file_storage:/app/file_storage
+    depends_on: 
+      - database
+      - broker
+  celery:
+    env_file:
+      - .env
+    build:
+      context: ./backend
+    command: sh /celery-point.sh
+    volumes:
+      - ./backend/:/app
+      - static_files:/app/static
+      - file_storage:/app/file_storage
+    depends_on:
+      - broker
+      - database
+  frontend:
+    env_file:
+      - .env
+    ports:
+      - "${WEB_HOST:-0.0.0.0}:${WEB_PORT:-80}:80"
+    build:
+      context: ./frontend
+    depends_on:
+      - backend
+    volumes:
+      - static_files:/home/app/static
+volumes:
+  database_data:
+  static_files:
+  file_storage:
