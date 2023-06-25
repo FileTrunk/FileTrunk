@@ -31,6 +31,8 @@ jobs:
 
       - name: Run tests
         run: |
+          printenv CLIENT_SECRET
+          printenv CLIENT_ID
           export SECRET_KEY="djangosecretkey"
           export DB_USER="postgres"
           export DB_PASSWORD="12345"
