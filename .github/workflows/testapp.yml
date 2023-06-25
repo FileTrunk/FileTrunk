@@ -10,34 +10,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.7'
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
 
-    - name: Install dependencies
-      run: |
-        pip install poetry
-        cd backend
-        poetry export -f requirements.txt --dev > requirements.txt
-        pip install -r requirements.txt
-        pip install psycopg2-binary
-        sudo apt -y install python3-psycopg2
+      - name: Install dependencies
+        run: |
+          pip install poetry
+          cd backend
+          poetry export -f requirements.txt --dev > requirements.txt
+          pip install -r requirements.txt
+          pip install psycopg2-binary
+          sudo apt -y install python3-psycopg2
 
-    - name: Run tests
-      run: |
-        cd backend
-        echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
-        echo "CLIENT_ID=${{ secrets.CLIENT_ID }}" >> .env
-        echo "CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}" >> .env
-        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-        echo "DB_NAME=test" >> .env
-        echo "DB_HOST=localhost" >> .env
-        cat .env
-        pytest
+      - name: Run tests
+        env: 
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: test
+          DB_HOST: localhost
+        run: |
+          cd backend
+          pytest
 
     services:
       database:
