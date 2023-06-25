@@ -132,27 +132,27 @@ def test_user_with_valid_data_creates_file_share_link_should_succeed_with_200(
     assert len(response.data['share_link_token']) > 0
 
 
-# @pytest.mark.django_db
-# @patch(
-#     'main.views.FileSystemStorage.open',
-#     MagicMock(return_value="Mock file"),
-# )
-# def test_user_without_authorization_downloads_public_file_with_share_link_should_succeed_with_200(
-#     client,
-#     file,
-#     headers,
-#     celery_config,
-#     share_link,
-# ):
-#     response = client.get(
-#         f'/api/v1/files/share-load/{share_link.share_token}/'
-#     )
-#     assert response.status_code == 200
-#     assert (
-#         response.headers['Content-Disposition']
-#         == 'attachment; filename=file.type'
-#     )
-#     assert response.headers['Content-Type'] == 'multipart/form-data'
+@pytest.mark.django_db
+@patch(
+    'main.views.FileSystemStorage.open',
+    MagicMock(return_value="Mock file"),
+)
+def test_user_without_authorization_downloads_public_file_with_share_link_should_succeed_with_200(
+    client,
+    file,
+    headers,
+    celery_config,
+    share_link,
+):
+    response = client.get(
+        f'/api/v1/files/share-load/{share_link.share_token}/'
+    )
+    assert response.status_code == 200
+    assert (
+        response.headers['Content-Disposition']
+        == 'attachment; filename=file.type'
+    )
+    assert response.headers['Content-Type'] == 'multipart/form-data'
 
 
 @pytest.mark.django_db
