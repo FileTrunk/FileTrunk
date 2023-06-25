@@ -33,10 +33,6 @@ jobs:
 
       - name: Run tests
         run: |
-          printenv CLIENT_SECRET
-          printenv CLIENT_ID
-          printenv SECRET_KEY
-          printenv DB_PASSWORD
           export DB_USER="postgres"
           export DB_HOST="127.0.0.1"
           export DB_NAME="test"
