@@ -7,15 +7,29 @@ on:
 jobs:
     deploy:
         runs-on: ubuntu-latest
+        env:
+            CLIENT_SECRET: "${{ secrets.CLIENT_SECRET }}"
+            CLIENT_ID: "${{ secrets.CLIENT_ID }}"
+            SECRET_KEY: "${{ secrets.SECRET_KEY }}"
+            DB_PASSWORD: "${{ secrets.DB_PASSWORD }}"
         steps:
             - name: Deploy app
               uses: appleboy/ssh-action@v0.1.2
               with:
-                  host: ${{ secrets.SSH_HOST }} # IP address of the server you wish to ssh into
-                  key: ${{ secrets.SSH_KEY }} # Private or public key of the server
-                  username: ${{ secrets.SSH_USERNAME }} # User of the server you want to ssh into
+                  host: ${{ secrets.SSH_HOST }} 
+                  key: ${{ secrets.SSH_KEY }} 
+                  username: ${{ secrets.SSH_USERNAME }} 
                   passphrase: ${{ secrets.SSH_PASSPHRASE }}
                   script: |
+                      export CLIENT_SECRET=$CLIENT_SECRET
+                      export SECRET_KEY=$SECRET_KEY
+                      export CLIENT_ID=$CLIENT_ID
+                      export DB_PASSWORD=$DB_PASSWORD
+                      export REACT_APP_HOST_CLIENT_ID=$CLIENT_ID
+                      export DB_USER=postgres
+                      export DB_NAME=development
+                      export DB_PORT=5432
+                      export DB_HOST=database
                       cd file_trunk
                       git pull
                       git checkout main
