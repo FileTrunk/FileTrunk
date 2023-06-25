@@ -1,0 +1,49 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        pip install poetry
+        cd backend
+        poetry export -f requirements.txt --dev > requirements.txt
+        pip install -r requirements.txt
+
+    - name: Configure secrets
+      run: |
+        echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> backend/.env
+        echo "CLIENT_ID=${{ secrets.CLIENT_ID }}" >> backend/.env
+        echo "CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}" >> backend/.env
+        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> backend/.env
+
+    - name: Run tests
+      run: |
+        cd backend
+        pytest
+
+    services:
+      database:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_USER: postgres
+          POSTGRES_DB: test
+
+      broker:
+        image: redis
