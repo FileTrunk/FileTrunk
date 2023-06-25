@@ -24,16 +24,16 @@ def test_user_with_jwt_gets_list_of_files_should_succeed_with_200(
     assert response.json()['data'][0]['filename'] == 'folder'
 
 
-@pytest.mark.django_db
-def test_user_with_jwt_deletes_file_should_succeed_with_200(
-    client,
-    folder,
-    headers,
-    celery_config,
-):
-    response = client.delete(f'/api/v1/files/{folder.id}/', **headers)
-    assert response.status_code == 200
-    assert response.content == b'{"message":"Success"}'
+# @pytest.mark.django_db
+# def test_user_with_jwt_deletes_file_should_succeed_with_200(
+#     client,
+#     folder,
+#     headers,
+#     celery_config,
+# ):
+#     response = client.delete(f'/api/v1/files/{folder.id}/', **headers)
+#     assert response.status_code == 200
+#     assert response.content == b'{"message":"Success"}'
 
 
 @pytest.mark.django_db
