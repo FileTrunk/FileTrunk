@@ -28,13 +28,6 @@ jobs:
           sudo apt -y install python3-psycopg2
 
       - name: Run tests
-        env: 
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_NAME: test
-          DB_HOST: localhost
         run: |
           cd backend
           pytest
