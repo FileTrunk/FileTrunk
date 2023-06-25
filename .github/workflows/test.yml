@@ -11,6 +11,8 @@ jobs:
     env:
         CLIENT_SECRET: "${{ secrets.CLIENT_SECRET }}"
         CLIENT_ID: "${{ secrets.CLIENT_ID }}"
+        SECRET_KEY: "${{ secrets.SECRET_KEY }}"
+        DB_PASSWORD: "${{ secrets.DB_PASSWORD }}"
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -33,9 +35,9 @@ jobs:
         run: |
           printenv CLIENT_SECRET
           printenv CLIENT_ID
-          export SECRET_KEY="djangosecretkey"
+          printenv SECRET_KEY
+          printenv DB_PASSWORD
           export DB_USER="postgres"
-          export DB_PASSWORD="12345"
           export DB_HOST="127.0.0.1"
           export DB_NAME="test"
           cd backend
@@ -45,7 +47,7 @@ jobs:
       database:
         image: postgres
         env:
-          POSTGRES_PASSWORD: 12345
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
           POSTGRES_USER: postgres
           POSTGRES_DB: test
         ports:
