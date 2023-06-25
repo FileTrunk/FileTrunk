@@ -9,8 +9,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-        CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-        CLIENT_ID: ${{ secrets.CLIENT_ID }}
+        CLIENT_SECRET: "${{ secrets.CLIENT_SECRET }}"
+        CLIENT_ID: "${{ secrets.CLIENT_ID }}"
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
