@@ -244,76 +244,76 @@ def test_user_with_jwt_creates_folder_with_non_valid_data_should_fail_with_200(
     assert response.content == b'{"message":"Your data is problematic!"}'
 
 
-# @pytest.mark.django_db
-# def test_user_with_jwt_create_file_with_non_valid_data_should_fail_with_200(
-#     client,
-#     folder,
-#     headers,
-#     celery_config,
-# ):
-#     filedata = {
-#         'parent_id': folder.id,
-#     }
-#     response = client.post(
-#         f'/api/v1/files/file-load/',
-#         **headers,
-#         data=filedata,
-#     )
-#     assert response.status_code == 200
-#     assert response.content == b'{"message":"Your data is problematic!"}'
+@pytest.mark.django_db
+def test_user_with_jwt_create_file_with_non_valid_data_should_fail_with_200(
+    client,
+    folder,
+    headers,
+    celery_config,
+):
+    filedata = {
+        'parent_id': folder.id,
+    }
+    response = client.post(
+        f'/api/v1/files/file-load/',
+        **headers,
+        data=filedata,
+    )
+    assert response.status_code == 200
+    assert response.content == b'{"message":"Your data is problematic!"}'
 
 
-# @pytest.mark.django_db
-# def test_bg_job_file_addition_changes_root_folder_size_should_succeed(
-#     celery_config,
-#     client,
-#     folder,
-#     file,
-#     headers,
-#     user,
-# ):
-#     profile_stats_create.apply((user.id, file.id))
-#     parent_file_size = (
-#         File.objects.all_with_deleted().get(pk=file.id).parent.file_size
-#     )
-#     assert parent_file_size == 20.2
+@pytest.mark.django_db
+def test_bg_job_file_addition_changes_root_folder_size_should_succeed(
+    celery_config,
+    client,
+    folder,
+    file,
+    headers,
+    user,
+):
+    profile_stats_create.apply((user.id, file.id))
+    parent_file_size = (
+        File.objects.all_with_deleted().get(pk=file.id).parent.file_size
+    )
+    assert parent_file_size == 20.2
 
 
-# @pytest.mark.django_db
-# def test_bg_job_file_deletion_changes_root_folder_size_should_succeed(
-#     celery_config,
-#     client,
-#     folder,
-#     file,
-#     headers,
-#     user,
-# ):
-#     profile_stats_deletion.apply((user.id, file.id))
-#     parent_file_size = (
-#         File.objects.all_with_deleted().get(pk=file.id).parent.file_size
-#     )
-#     assert parent_file_size == 0.0
+@pytest.mark.django_db
+def test_bg_job_file_deletion_changes_root_folder_size_should_succeed(
+    celery_config,
+    client,
+    folder,
+    file,
+    headers,
+    user,
+):
+    profile_stats_deletion.apply((user.id, file.id))
+    parent_file_size = (
+        File.objects.all_with_deleted().get(pk=file.id).parent.file_size
+    )
+    assert parent_file_size == 0.0
 
 
-# @pytest.mark.django_db
-# def test_bg_job_deletion_of_soft_deleted_files_and_folders_should_succeed(
-#     celery_config,
-#     client,
-#     folder,
-#     headers,
-# ):
-#     File.objects.all().delete()
-#     db_clean_up.apply()
-#     assert File.all_objects.all().count() == 0
+@pytest.mark.django_db
+def test_bg_job_deletion_of_soft_deleted_files_and_folders_should_succeed(
+    celery_config,
+    client,
+    folder,
+    headers,
+):
+    File.objects.all().delete()
+    db_clean_up.apply()
+    assert File.all_objects.all().count() == 0
 
 
-# @pytest.mark.django_db
-# def test_bg_job_deletion_of_expired_share_file_link_should_succeed(
-#     celery_config,
-#     client,
-#     folder,
-#     headers,
-#     expired_share_link,
-# ):
-#     delete_expired_share_links.apply()
-#     assert ShareLink.all_objects.all().count() == 0
+@pytest.mark.django_db
+def test_bg_job_deletion_of_expired_share_file_link_should_succeed(
+    celery_config,
+    client,
+    folder,
+    headers,
+    expired_share_link,
+):
+    delete_expired_share_links.apply()
+    assert ShareLink.all_objects.all().count() == 0
