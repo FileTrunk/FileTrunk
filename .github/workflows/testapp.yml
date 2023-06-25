@@ -30,9 +30,9 @@ jobs:
       - name: Run tests
         run: |
           export SECRET_KEY="djangosecretkey"
-          export DB_USER=${{ secrets.DB_USER }}
-          export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-          export DB_NAME=${{ secrets.DB_NAME }}
+          export DB_USER="${{ secrets.DB_USER }}""
+          export DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
+          export DB_NAME="${{ secrets.DB_NAME }}"
           export DB_HOST="localhost"
           export DB_NAME="test"
           cd backend
