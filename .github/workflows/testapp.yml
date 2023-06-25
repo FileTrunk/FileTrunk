@@ -27,21 +27,15 @@ jobs:
         pip install psycopg2-binary
         sudo apt -y install python3-psycopg2
 
-    - name: Configure secrets
+    - name: Run tests
       run: |
+        cd backend
         echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
         echo "CLIENT_ID=${{ secrets.CLIENT_ID }}" >> .env
         echo "CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}" >> .env
         echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-        echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> backend/.env
-        echo "CLIENT_ID=${{ secrets.CLIENT_ID }}" >> backend/.env
-        echo "CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}" >> backend/.env
-        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> backend/.env
-
-    - name: Run tests
-      run: |
-        cd backend
-        ls -la
+        echo "DB_NAME=test" >> .env
+        echo "DB_HOST=localhost" >> .env
         cat .env
         pytest
 
