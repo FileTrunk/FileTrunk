@@ -8,7 +8,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    env:
+        CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        CLIENT_ID: ${{ secrets.CLIENT_ID }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -29,8 +31,6 @@ jobs:
 
       - name: Run tests
         run: |
-          export CLIENT_SECRET="${{ secrets.CLIENT_SECRET }}"
-          export CLIENT_ID="${{ secrets.CLIENT_ID }}"
           export SECRET_KEY="djangosecretkey"
           export DB_USER="postgres"
           export DB_PASSWORD="12345"
