@@ -29,6 +29,8 @@ jobs:
 
       - name: Run tests
         run: |
+          export CLIENT_SECRET="${{ secrets.CLIENT_SECRET }}"
+          export CLIENT_ID="${{ secrets.CLIENT_ID }}"
           export SECRET_KEY="djangosecretkey"
           export DB_USER="postgres"
           export DB_PASSWORD="12345"
