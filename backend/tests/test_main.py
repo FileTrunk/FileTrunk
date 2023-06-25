@@ -85,17 +85,17 @@ def test_user_with_jwt_gets_all_child_files_should_succeed_with_200(
 #     assert response.status_code == 200
 
 
-# @pytest.mark.django_db
-# def test_user_with_jwt_gets_download_link_should_succeed_with_200(
-#     client, file, headers
-# ):
-#     response = client.get(
-#         f'/api/v1/files/file-load/{file.id}/',
-#         **headers,
-#     )
-#     assert response.status_code == 200
-#     assert response.json()['message'] == 'Success'
-#     assert isinstance(response.json()['token'], str) is True
+@pytest.mark.django_db
+def test_user_with_jwt_gets_download_link_should_succeed_with_200(
+    client, file, headers
+):
+    response = client.get(
+        f'/api/v1/files/file-load/{file.id}/',
+        **headers,
+    )
+    assert response.status_code == 200
+    assert response.json()['message'] == 'Success'
+    assert isinstance(response.json()['token'], str) is True
 
 
 # @pytest.mark.django_db
@@ -115,21 +115,21 @@ def test_user_with_jwt_gets_all_child_files_should_succeed_with_200(
 #     assert response.headers['Content-Type'] == 'multipart/form-data'
 
 
-# @pytest.mark.django_db
-# def test_user_with_valid_data_creates_file_share_link_should_succeed_with_200(
-#     client,
-#     file,
-#     headers,
-#     celery_config,
-# ):
-#     response = client.post(
-#         f'/api/v1/files/share-load/',
-#         **headers,
-#         data={'file_id': file.id, 'time': 60},
-#     )
-#     assert response.status_code == 200
-#     assert response.data['message'] == "Success"
-#     assert len(response.data['share_link_token']) > 0
+@pytest.mark.django_db
+def test_user_with_valid_data_creates_file_share_link_should_succeed_with_200(
+    client,
+    file,
+    headers,
+    celery_config,
+):
+    response = client.post(
+        f'/api/v1/files/share-load/',
+        **headers,
+        data={'file_id': file.id, 'time': 60},
+    )
+    assert response.status_code == 200
+    assert response.data['message'] == "Success"
+    assert len(response.data['share_link_token']) > 0
 
 
 # @pytest.mark.django_db
@@ -155,17 +155,17 @@ def test_user_with_jwt_gets_all_child_files_should_succeed_with_200(
 #     assert response.headers['Content-Type'] == 'multipart/form-data'
 
 
-# @pytest.mark.django_db
-# def test_user_with_valid_jwt_disables_all_share_links_for_specific_file_should_succeed_with_200(
-#     client,
-#     file,
-#     headers,
-#     celery_config,
-#     share_link,
-# ):
-#     response = client.delete(f'/api/v1/files/share-load/{file.id}/', **headers)
-#     assert response.status_code == 200
-#     assert ShareLink.objects.count() == 0
+@pytest.mark.django_db
+def test_user_with_valid_jwt_disables_all_share_links_for_specific_file_should_succeed_with_200(
+    client,
+    file,
+    headers,
+    celery_config,
+    share_link,
+):
+    response = client.delete(f'/api/v1/files/share-load/{file.id}/', **headers)
+    assert response.status_code == 200
+    assert ShareLink.objects.count() == 0
 
 
 # @pytest.mark.django_db
@@ -186,62 +186,62 @@ def test_user_with_jwt_gets_all_child_files_should_succeed_with_200(
 #     )
 
 
-# @pytest.mark.parametrize(
-#     'url',
-#     (
-#         ('/api/v1/files/'),
-#         ('/api/v1/files/1/'),
-#         ('/api/v1/files/file-load/1/'),
-#     ),
-# )
-# @pytest.mark.django_db
-# def test_user_without_headers_connects_to_any_restricted_viewset_should_fail_with_403(
-#     client, url
-# ):
-#     response = client.get(url)
-#     assert response.status_code == 403
+@pytest.mark.parametrize(
+    'url',
+    (
+        ('/api/v1/files/'),
+        ('/api/v1/files/1/'),
+        ('/api/v1/files/file-load/1/'),
+    ),
+)
+@pytest.mark.django_db
+def test_user_without_headers_connects_to_any_restricted_viewset_should_fail_with_403(
+    client, url
+):
+    response = client.get(url)
+    assert response.status_code == 403
 
 
-# @pytest.mark.django_db
-# def test_user_without_jwt_in_headers_connects_to_any_viewset_should_fail_with_403(
-#     client, headers_with_no_token
-# ):
-#     response = client.get('/api/v1/files/', **headers_with_no_token)
-#     assert response.status_code == 403
+@pytest.mark.django_db
+def test_user_without_jwt_in_headers_connects_to_any_viewset_should_fail_with_403(
+    client, headers_with_no_token
+):
+    response = client.get('/api/v1/files/', **headers_with_no_token)
+    assert response.status_code == 403
 
 
-# @pytest.mark.django_db
-# def test_user_with_expired_jwt_in_headers_connects_to_any_viewset_should_fail_with_403(
-#     client, headers_with_exp_jwt
-# ):
-#     time.sleep(2)
-#     response = client.get('/api/v1/files/', **headers_with_exp_jwt)
-#     assert response.status_code == 403
+@pytest.mark.django_db
+def test_user_with_expired_jwt_in_headers_connects_to_any_viewset_should_fail_with_403(
+    client, headers_with_exp_jwt
+):
+    time.sleep(2)
+    response = client.get('/api/v1/files/', **headers_with_exp_jwt)
+    assert response.status_code == 403
 
 
-# @pytest.mark.django_db
-# def test_user_with_non_valid_jwt_in_headers_connects_to_any_viewset_should_fail_with_403(
-#     client, headers_with_non_valid_token
-# ):
-#     response = client.get('/api/v1/files/', **headers_with_non_valid_token)
-#     assert response.status_code == 403
+@pytest.mark.django_db
+def test_user_with_non_valid_jwt_in_headers_connects_to_any_viewset_should_fail_with_403(
+    client, headers_with_non_valid_token
+):
+    response = client.get('/api/v1/files/', **headers_with_non_valid_token)
+    assert response.status_code == 403
 
 
-# @pytest.mark.django_db
-# def test_user_with_jwt_creates_folder_with_non_valid_data_should_fail_with_200(
-#     client,
-#     headers,
-# ):
-#     response = client.post(
-#         '/api/v1/files/',
-#         **headers,
-#         data={
-#             'is_folder': True,
-#             'parent_id': "",
-#         },
-#     )
-#     assert response.status_code == 200
-#     assert response.content == b'{"message":"Your data is problematic!"}'
+@pytest.mark.django_db
+def test_user_with_jwt_creates_folder_with_non_valid_data_should_fail_with_200(
+    client,
+    headers,
+):
+    response = client.post(
+        '/api/v1/files/',
+        **headers,
+        data={
+            'is_folder': True,
+            'parent_id': "",
+        },
+    )
+    assert response.status_code == 200
+    assert response.content == b'{"message":"Your data is problematic!"}'
 
 
 # @pytest.mark.django_db
