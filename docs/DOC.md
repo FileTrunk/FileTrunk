@@ -14,7 +14,7 @@ Apart from that, there is an integrated admin panel in the app for the developer
 
 *Database*: PostgreSQL
 
-*Error-handling*: sentry-sdk
+*Error handling*: sentry-sdk
 
 ### Tables
 ![UML diagram](umlclass.png?raw=true "Classes UML Diagram")
