@@ -60,7 +60,7 @@ Details: Endpoint for deactivating and creating temporary file links. Although d
 
 ### Authorization/Authentication
 In order to authorize in the app, the user has only an option to use Google OAuth 2.0. 
-![OAuth diagram](.oauthdiag.png?raw=true "OAuth 2.0 Diagram")
+![OAuth diagram](oauthdiag.png?raw=true "OAuth 2.0 Diagram")
 On the diagram above depicted the way the user is authorized in the app. As backend verifies google token, the **JWT token** is created using app's secret and user's id. After that, this JWT token is saved on the user side as a cookie. Everytime the frontend does an authorized request to the backend, it adds this token in the header of the request, this token is then verified on the backend side and information from it is decoded.
 
 ### Background tasks
