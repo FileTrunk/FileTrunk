@@ -7,9 +7,13 @@ Apart from that, there is an integrated admin panel in the app for the developer
 
 ### Stack:
 *Languages*: Python, Javascript
+
 *Frameworks*: Django, Django REST, React
+
 *Spec. libraries*: celery, redis, google-auth, gunicorn, pytest
+
 *Database*: PostgreSQL
+
 *Error-handling*: sentry-sdk
 
 ### Tables
